@@ -1,0 +1,69 @@
+cocinando = True
+
+ingredientes = open("ingredientes.txt","r",encoding="utf-8")
+
+diccionario_ingredientes = {}
+for linea in ingredientes.readlines():
+    limpiar = linea.strip("\n")
+    ing = limpiar.split(" ")
+    ingrediente = ing[0]
+    cantidad = int(ing[1])
+    diccionario_ingredientes[ingrediente] = cantidad
+# print (diccionario_ingredientes)
+ingredientes.close()
+
+recetas = open("recetas.csv","r",encoding="utf-8")
+lines = recetas.readlines()
+
+diccionario_recetas = {}
+for receta in lines:
+    receta = receta.strip()
+    receta = receta.split(",")
+    nombre_receta = receta.pop(0)
+    diccionario_recetas[nombre_receta] = receta
+print (diccionario_recetas)
+recetas.close()
+
+#-----------------
+
+def printStocks():
+    print("Stock actual de ingredientes disponibles")
+    for k,v in diccionario_ingredientes.items():
+        print(k,v)
+
+def reponerIngre(diccionario_ingredientes):
+    for agrega in ingre_reponer:
+        diccionario_ingredientes[agrega] += 1
+
+def prepararReceta(preparar):
+    for rece in diccionario_recetas:
+        if preparar in diccionario_recetas:
+            print (f"Si tenemos la receta {preparar} ")
+            diccionario_recetas[preparar] = diccionario_ingredientes.items()
+            print (f"tu preparacion {preparar} esta lista ")
+        elif preparar[1] in rece[1]:
+            print (f"No se puede preparar falta {rece[1]} ")
+
+
+while cocinando:
+    quiero = str(input("PREPARAR, REPONER, STOP: ")).upper()
+
+    # PREPARAR
+    if quiero == ("P"):
+        printStocks()
+        preparar = input("Que receta quieres PREPARAR: ").upper()
+        prepararReceta(preparar)
+        printStocks()
+
+    # REPONER
+    if quiero == ("R"):
+        printStocks()
+        ingre_reponer = input("Ingrese los ingredientes que quieres REPONER: ")
+        ingre_reponer = ingre_reponer.split(" ")
+        reponerIngre(diccionario_ingredientes)
+        printStocks()
+
+    # STOP
+    if quiero == ("S"):
+        print(f"\nGracias por ayudar en la cocina, vuelve pronto!! \n")
+        break
